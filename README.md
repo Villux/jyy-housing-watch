@@ -1,36 +1,14 @@
 # jyy-housing
 
-FIXME: description
+In Jyväskylä the best student appartments are advertised in JYY's website.
+That site is missing a lot of normal features, like notifications if new housing ad appears.
 
-## Installation
+This application send email notification if new house appears.
 
-Download from http://example.com/FIXME.
+I have no motivation to live in Jyväskylä, so I'm only expanding my
+Clojure skills with this application. 
 
-## Usage
+## TODO
 
-FIXME: explanation
+* Connect to Google's email API 
 
-    $ java -jar jyy-housing-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2015 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
