@@ -6,10 +6,10 @@
             [clojure.tools.logging :as log])
   (:use clojure.set))
 
-(use 'clojure.pprint)
-
+;; Url for housing ads
 (def ^:dynamic *base-url* "http://jyy.fi/opiskelijalle/asuminen-ja-toimeentulo/asunnot/vapaat-asunnot/")
 
+;; Selectors for web scraping
 (def ^:dynamic *title-selector* [:h2])
 (def ^:dynamic *content-selector* [:p.content])
 (def ^:dynamic *details-selector* [[:p.event-details (html/but :.published)]])
@@ -60,17 +60,30 @@
   (gmail/set-client-id! (environ/env :mail-client-id))
   (gmail/set-refresh-token! (environ/env :mail-refresh-token)))
 
+(defn concat-details [details]
+  (clojure.string/join " " details))
 
-(defn format-mail [body]
+(defn base64->base64url [mail]
+  (clojure.string/replace mail #"\+|\=|\/" {"+" "-" "=" "*" "/" "_"}))
+
+(defn format-mail [ad]
+  (clojure.string/join "\n" [(:title ad)
+                             (:content ad)
+                             (str (concat-details (vals (:details ad))) "\n" (:date ad))]))
+
+(defn get-ad-split-string []
+  (str "\n\n" (repeat 20 "*") "\n\n"))
+
+(defn format-mail-seq [ad-seq]
   {:to "villej.toiviainen@gmail.com"
    :subject "Clojure test"
-   :body (:content body)})
+   :body (clojure.string/join (get-ad-split-string) (map format-mail ad-seq))})
 
-(defn send-mail [body]
-  (let [mail (format-mail body)]
+
+(defn send-mail [ad-seq]
+  (let [mail (format-mail-seq ad-seq)]
     (log/info "Sending mail to")
-    (println body)))
-;;    (gmail/message-send mail)))
+    (gmail/message-send mail)))
 
 (defn compare-latests-results [latest-result]
   (log/info "compare-latests-results")
@@ -91,7 +104,7 @@
 (defn -main
   [& args]
   (log/info "Starting the app")
-  (let [ad-list (select-jyy-apartment-ads)]
+  (let [ad-list [(select-jyy-apartment-ads)]]
     (log/info "Setting mail client env")
     (set-mail-auth-variables)
     (handle-scrape-result ad-list)))
