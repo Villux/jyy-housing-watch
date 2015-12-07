@@ -16,7 +16,7 @@
 (def ^:dynamic *date-selector* [:p.published :strong])
 
 ;; Results from last scrape
-(def ^:dynamic *last-result* #{1 2 3})
+(def ^:dynamic *last-result* #{})
 
 (defn get-content [elem]
   (log/info "get-content")
@@ -42,7 +42,6 @@
 
 (defn parse-date [raw-date]
   (log/info "parse-date")
-  (log/info raw-date)
   (clojure.string/replace (get-content raw-date) "\n" " "))
 
 (defn fetch-url [url]
@@ -52,7 +51,6 @@
   (html/select (fetch-url *base-url*) [:#apartment-r-]))
 
 (defn get-ad-data [ad]
-  (println ad)
   (log/info "get-ad-data")
   (let [title (parse-title (first (html/select [ad] *title-selector*)))
         content (parse-content (first (html/select [ad] *content-selector*)))
@@ -73,7 +71,6 @@
 
 (defn format-mail [ad]
   (log/info "Format mail")
-  (log/info ad)
   (clojure.string/join "\n" [(:title ad)
                              (:content ad)
                              (str (concat-details (vals (:details ad))) "\n" (:date ad))]))
@@ -83,7 +80,6 @@
 
 (defn format-mail-seq [ad-seq]
   (log/info "Format mail seq")
-  (log/info ad-seq)
   {:to "villej.toiviainen@gmail.com"
    :subject "Clojure test"
    :body (clojure.string/join (get-ad-split-string) (map format-mail ad-seq))})
@@ -92,7 +88,6 @@
 (defn send-mail [ad-seq]
   (let [mail (format-mail-seq ad-seq)]
     (log/info "Sending mail to")
-    (log/info mail)
     (gmail/message-send mail)))
 
 (defn compare-latests-results [latest-result]
@@ -106,7 +101,6 @@
 (defn handle-scrape-result [ad-list]
   (log/info "handle-scrape-result")
   (let [result (set (map get-ad-data ad-list))]
-    (log/info result)
     (if (empty? *last-result*)
       (set-last-result result)
       (send-mail (compare-latests-results result)))))
@@ -119,6 +113,3 @@
     (log/info "Setting mail client env")
     (set-mail-auth-variables)
     (handle-scrape-result ad-list)))
-
-
-

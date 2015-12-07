@@ -6,9 +6,8 @@ That site is missing a lot of normal features, like notifications if new housing
 This application send email notification if new house appears.
 
 I have no motivation to live in Jyväskylä, so I'm only expanding my
-Clojure skills with this application. 
+Clojure skills with this application.
 
 ## TODO
 
-* Connect to Google's email API 
-
+* Implement scheduled run

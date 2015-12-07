@@ -6,10 +6,9 @@
   :dependencies [
                  [org.clojure/clojure "1.7.0"]
                  [enlive "1.1.5"]
-                 [gmail-clj "0.6.2"]
+                 [gmail-clj "0.6.3"]
                  [environ "1.0.1"]
                  [org.clojure/tools.logging "0.3.1"]]
-  ;;:plugins [[lein-environ "1.0.1"]]
   :main ^:skip-aot jyy-housing.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
