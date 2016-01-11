@@ -1,12 +1,10 @@
 # jyy-housing
 
-In Jyväskylä the best student appartments are advertised in JYY's website.
+In Jyväskylä the best student apartments are advertised in JYY's website.
 That site is missing a lot of normal features, like notifications if new housing ad appears.
 
-This application send email notification if new house appears.
+This application sends email notification if new ad appears.
 
-I have no motivation to live in Jyväskylä, so I'm only expanding my
-Clojure skills with this application.
 
 ## TODO
 
